@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.example.mystarwarslist.R
+import com.example.mystarwarslist.view.fragments.ListFragment
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -20,5 +21,11 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_container)
+
+
+        supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.activityContainer, ListFragment())
+                    .commit()
     }
 }

@@ -1,0 +1,3 @@
+package com.example.mystarwarslist.data.entity
+
+class Character(val name : String, val birth_year : String, val eye_color : String, val gender : String, val hair_color : String, val height : String, val mass : String, val skin_color : String, val homeworld : String, val films: Films, val species : Species, val starships : Starships, val vehicles : Vehicles, val url : String, val created : String, val edited : String)
