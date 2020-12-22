@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">MyStarWarsList</string>
     <string name="splash_image_content">splash</string>
+    <string name="categorieName">Catégorie</string>
+    <string name="titleItem">Title</string>
+    <string name="subtitleItem">Subtitle</string>
 </resources>
