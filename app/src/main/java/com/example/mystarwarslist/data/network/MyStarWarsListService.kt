@@ -2,9 +2,7 @@ package com.example.mystarwarslist.data.network
 
 import com.example.mystarwarslist.data.entity.*
 import io.reactivex.Single
-import org.json.JSONObject
 import retrofit2.http.GET
-import java.util.*
 
 interface MyStarWarsListService {
 

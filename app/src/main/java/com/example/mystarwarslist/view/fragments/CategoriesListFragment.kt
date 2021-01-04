@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -56,9 +57,19 @@ class CategoriesListFragment : BaseFragment<CategoriesListViewModel>(), Categori
     }
 
     override fun gotoList(position: Int) {
+        lateinit var fragment : Fragment
+        when(position){
+            0 -> fragment = FilmsListFragment()
+            1 -> fragment = FilmsListFragment()
+            2 -> fragment = FilmsListFragment()
+            3 -> fragment = FilmsListFragment()
+            4 -> fragment = FilmsListFragment()
+            5 -> fragment = FilmsListFragment()
+        }
+
         activity!!.supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.activityContainer, ListFragment())
+                .replace(R.id.activityContainer, fragment)
                 .commit()
     }
 }
