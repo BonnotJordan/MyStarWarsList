@@ -3,6 +3,7 @@ package com.example.mystarwarslist.view.fragments
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,10 +17,13 @@ import kotlinx.android.synthetic.main.fragment_list.*
 import javax.inject.Inject
 import com.example.mystarwarslist.view.ListView
 import com.example.mystarwarslist.view.adapters.*
+import androidx.appcompat.widget.SearchView.*
 
-class ListFragment : BaseFragment<ListFragmentViewModel>(), ListView {
+class ListFragment : BaseFragment<ListFragmentViewModel>(), ListView, OnQueryTextListener {
 
     override val layoutId: Int = R.layout.fragment_list
+
+    lateinit var arrayData : ArrayList<Any>
 
     @Inject
     override lateinit var viewModel: ListFragmentViewModel
@@ -43,11 +47,11 @@ class ListFragment : BaseFragment<ListFragmentViewModel>(), ListView {
     }
 
     override fun displayLoader() {
-        //progressBar.visibility = View.VISIBLE
+        progressBar.visibility = View.VISIBLE
     }
 
     override fun hideLoader() {
-        //progressBar.visibility = View.INVISIBLE
+        progressBar.visibility = View.INVISIBLE
     }
 
     override fun showFilms(filmsResults: FilmsResults) {
@@ -58,6 +62,7 @@ class ListFragment : BaseFragment<ListFragmentViewModel>(), ListView {
     override fun showPeople(peopleList: ArrayList<People>) {
         val adapter = PeopleListAdapter(peopleList, viewModel)
         recyclerView.adapter = adapter
+        arrayData = peopleList as ArrayList<Any>
     }
 
     override fun showPlanets(planetsList: ArrayList<Planet>) {
@@ -87,6 +92,17 @@ class ListFragment : BaseFragment<ListFragmentViewModel>(), ListView {
 
     override fun gotoFilmDetails(film: Film) {
         TODO("Not yet implemented")
+    }
+
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun onQueryTextChange(newText: String?): Boolean {
+        arrayData.removeAt(0)
+        val adapter = PeopleListAdapter(arrayData as ArrayList<People>, viewModel)
+        recyclerView.adapter = adapter
+        return false
     }
 
 

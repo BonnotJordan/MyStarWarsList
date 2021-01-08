@@ -60,9 +60,11 @@ class CategoriesListFragment : BaseFragment<CategoriesListViewModel>(), Categori
 
         fragment.categorieId = position
 
+
         activity!!.supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.activityContainer, fragment)
+                .addToBackStack("frag")
                 .commit()
     }
 }

@@ -1,6 +1,7 @@
 package com.example.mystarwarslist.viewmodel
 
 import android.content.Context
+import androidx.appcompat.widget.SearchView
 import com.example.mystarwarslist.base.BaseViewModel
 import com.example.mystarwarslist.data.entity.*
 import com.example.mystarwarslist.data.network.MyStarWarsListService
@@ -13,7 +14,7 @@ import javax.inject.Inject
 
 class ListFragmentViewModel
 @Inject constructor(private val service: MyStarWarsListService, private val context: Context) : BaseViewModel<ListView>(),
- FilmListAdapter.ClickOnRecycler, PeopleListAdapter.ClickOnRecycler, PlanetListAdapter.ClickOnRecycler, SpecieListAdapter.ClickOnRecycler, StarshipListAdapter.ClickOnRecycler, VehicleListAdapter.ClickOnRecycler {
+ FilmListAdapter.ClickOnRecycler, PeopleListAdapter.ClickOnRecycler, PlanetListAdapter.ClickOnRecycler, SpecieListAdapter.ClickOnRecycler, StarshipListAdapter.ClickOnRecycler, VehicleListAdapter.ClickOnRecycler, SearchView.OnQueryTextListener {
 
     var people = ArrayList<People>()
     var species = ArrayList<Specie>()
@@ -39,6 +40,7 @@ class ListFragmentViewModel
     }
 
     fun getFilms() {
+        view.displayLoader()
         service.getFilms()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -54,6 +56,7 @@ class ListFragmentViewModel
     }
 
     fun getPlanets(page : Int) {
+        view.displayLoader()
         var myPage : Int = page
         service.getPlanets(myPage)
                 .subscribeOn(Schedulers.io())
@@ -77,18 +80,22 @@ class ListFragmentViewModel
     }
 
     fun getVehicles(page : Int) {
+        view.displayLoader()
         var myPage : Int = page
         service.getVehicles(myPage)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy (
                         onError = {
+                            view.hideLoader()
                             view.showError(it)
                         },
                         onSuccess = {
                             if (it.next != null) {
                                 myPage++
                                 getVehicles(myPage)
+                            } else {
+                                view.hideLoader()
                             }
                             for (i in 0..it.results.size-1){
                                 vehicles.add(it.results[i])
@@ -99,6 +106,7 @@ class ListFragmentViewModel
 
     }
     fun getStarships(page : Int) {
+        view.displayLoader()
         var myPage : Int = page
         service.getStarships(myPage)
                 .subscribeOn(Schedulers.io())
@@ -111,6 +119,8 @@ class ListFragmentViewModel
                             if (it.next != null) {
                                 myPage++
                                 getStarships(myPage)
+                            } else {
+                                view.hideLoader()
                             }
                             for (i in 0..it.results.size-1){
                                 starships.add(it.results[i])
@@ -122,6 +132,7 @@ class ListFragmentViewModel
     }
 
     fun getPeople(page : Int) {
+        view.displayLoader()
         var myPage : Int = page
 
         service.getPeople(myPage)
@@ -135,6 +146,8 @@ class ListFragmentViewModel
                             if (it.next != null) {
                                 myPage++
                                 getPeople(myPage)
+                            } else {
+                                view.hideLoader()
                             }
                             for (i in 0..it.results.size-1){
                                 people.add(it.results[i])
@@ -146,6 +159,7 @@ class ListFragmentViewModel
     }
 
     fun getSpecies(page : Int) {
+        view.displayLoader()
         var myPage : Int = page
         service.getSpecies(myPage)
                 .subscribeOn(Schedulers.io())
@@ -158,6 +172,8 @@ class ListFragmentViewModel
                             if (it.next != null) {
                                 myPage++
                                 getSpecies(myPage)
+                            } else {
+                                view.hideLoader()
                             }
                             for (i in 0..it.results.size-1){
                                 species.add(it.results[i])
@@ -166,6 +182,14 @@ class ListFragmentViewModel
                         }
                 )
 
+    }
+
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun onQueryTextChange(newText: String?): Boolean {
+        TODO("Not yet implemented")
     }
 
 

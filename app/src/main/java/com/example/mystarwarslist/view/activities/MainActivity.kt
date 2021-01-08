@@ -28,4 +28,6 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
                     .replace(R.id.activityContainer, CategoriesListFragment())
                     .commit()
     }
+
+
 }
