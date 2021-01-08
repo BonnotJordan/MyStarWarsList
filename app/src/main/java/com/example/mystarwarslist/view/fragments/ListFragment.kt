@@ -9,21 +9,22 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mystarwarslist.base.BaseFragment
 import com.example.mystarwarslist.R
-import com.example.mystarwarslist.data.entity.Film
-import com.example.mystarwarslist.data.entity.FilmsResults
-import com.example.mystarwarslist.viewmodel.FilmsListFragmentViewModel
+import com.example.mystarwarslist.data.entity.*
+import com.example.mystarwarslist.viewmodel.ListFragmentViewModel
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_list.*
 import javax.inject.Inject
 import com.example.mystarwarslist.view.ListView
-import com.example.mystarwarslist.view.adapters.ListAdapter
+import com.example.mystarwarslist.view.adapters.*
 
-class FilmsListFragment : BaseFragment<FilmsListFragmentViewModel>(), ListView {
+class ListFragment : BaseFragment<ListFragmentViewModel>(), ListView {
 
     override val layoutId: Int = R.layout.fragment_list
 
     @Inject
-    override lateinit var viewModel: FilmsListFragmentViewModel
+    override lateinit var viewModel: ListFragmentViewModel
+
+    var categorieId : Int = -1
 
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
@@ -38,7 +39,7 @@ class FilmsListFragment : BaseFragment<FilmsListFragmentViewModel>(), ListView {
         val dividerItemDecoration = DividerItemDecoration(recyclerView.context,
                 RecyclerView.VERTICAL)
         recyclerView.addItemDecoration(dividerItemDecoration)
-        viewModel.start()
+        viewModel.start(categorieId)
     }
 
     override fun displayLoader() {
@@ -50,7 +51,32 @@ class FilmsListFragment : BaseFragment<FilmsListFragmentViewModel>(), ListView {
     }
 
     override fun showFilms(filmsResults: FilmsResults) {
-        val adapter = ListAdapter(filmsResults, viewModel)
+        val adapter = FilmListAdapter(filmsResults, viewModel)
+        recyclerView.adapter = adapter
+    }
+
+    override fun showPeople(peopleList: ArrayList<People>) {
+        val adapter = PeopleListAdapter(peopleList, viewModel)
+        recyclerView.adapter = adapter
+    }
+
+    override fun showPlanets(planetsList: ArrayList<Planet>) {
+        val adapter = PlanetListAdapter(planetsList, viewModel)
+        recyclerView.adapter = adapter
+    }
+
+    override fun showSpecies(speciesList: ArrayList<Specie>) {
+        val adapter = SpecieListAdapter(speciesList, viewModel)
+        recyclerView.adapter = adapter
+    }
+
+    override fun showStarships(starshipsList: ArrayList<Starship>) {
+        val adapter = StarshipListAdapter(starshipsList, viewModel)
+        recyclerView.adapter = adapter
+    }
+
+    override fun showVehicles(vehiclesList: ArrayList<Vehicle>) {
+        val adapter = VehicleListAdapter(vehiclesList, viewModel)
         recyclerView.adapter = adapter
     }
 

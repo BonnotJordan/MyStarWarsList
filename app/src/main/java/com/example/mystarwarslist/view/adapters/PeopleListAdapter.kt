@@ -8,23 +8,24 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mystarwarslist.R
 import com.example.mystarwarslist.data.entity.Film
-import com.example.mystarwarslist.data.entity.Films
 import com.example.mystarwarslist.data.entity.FilmsResults
+import com.example.mystarwarslist.data.entity.People
+import com.example.mystarwarslist.data.entity.PeopleResult
 import kotlinx.android.synthetic.main.list_item.view.*
 
-class ListAdapter(private val datas : FilmsResults, private val listener : ListAdapter.ClickOnRecycler) : RecyclerView.Adapter<ListAdapter.ViewHolder>() {
+class PeopleListAdapter(private val datas : ArrayList<People>, private val listener : PeopleListAdapter.ClickOnRecycler) : RecyclerView.Adapter<PeopleListAdapter.ViewHolder>() {
 
-    class ViewHolder(view: View, private val listener : ListAdapter.ClickOnRecycler) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View, private val listener : PeopleListAdapter.ClickOnRecycler) : RecyclerView.ViewHolder(view) {
         val context: Context = itemView.context
         val title: TextView = itemView.textViewTitle
         val subtitle : TextView = itemView.textViewSubtitle
 
-        fun bindItems(data: Film, position: Int) {
+        fun bindItems(data: People, position: Int) {
 
             var result : Any? = null
 
-            title.text = data.title
-            subtitle.text = data.episode_id.toString()
+            title.text = data.name
+            subtitle.text = data.homeworld
 
             itemView.setOnClickListener {
                 listener.itemClicked(position, context)
@@ -32,21 +33,20 @@ class ListAdapter(private val datas : FilmsResults, private val listener : ListA
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PeopleListAdapter.ViewHolder {
 
         val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.list_item, parent, false)
 
-        return ListAdapter.ViewHolder(view, listener)
+        return PeopleListAdapter.ViewHolder(view, listener)
     }
 
     override fun getItemCount(): Int {
-        return datas.results.size
+        return datas.size
     }
 
-    override fun onBindViewHolder(holder: ListAdapter.ViewHolder, position: Int) {
-        var list : List<Film> = datas.results.sortedWith(compareBy { it.episode_id })
-        holder.bindItems(list[position],position)
+    override fun onBindViewHolder(holder: PeopleListAdapter.ViewHolder, position: Int) {
+        holder.bindItems(datas[position],position)
     }
 
     interface ClickOnRecycler {
