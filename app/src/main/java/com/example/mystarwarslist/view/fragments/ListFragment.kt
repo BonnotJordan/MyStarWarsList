@@ -1,9 +1,13 @@
 package com.example.mystarwarslist.view.fragments
 
 import android.content.Context
+import android.media.Image
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,7 +23,7 @@ import com.example.mystarwarslist.view.ListView
 import com.example.mystarwarslist.view.adapters.*
 import androidx.appcompat.widget.SearchView.*
 
-class ListFragment : BaseFragment<ListFragmentViewModel>(), ListView, OnQueryTextListener {
+class ListFragment : BaseFragment<ListFragmentViewModel>(), ListView, SearchView.OnQueryTextListener {
 
     override val layoutId: Int = R.layout.fragment_list
 
@@ -37,6 +41,7 @@ class ListFragment : BaseFragment<ListFragmentViewModel>(), ListView, OnQueryTex
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        searchView.setOnQueryTextListener(this)
         viewModel.attach(this)
         recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL,
                 false)
@@ -54,9 +59,10 @@ class ListFragment : BaseFragment<ListFragmentViewModel>(), ListView, OnQueryTex
         progressBar.visibility = View.INVISIBLE
     }
 
-    override fun showFilms(filmsResults: FilmsResults) {
-        val adapter = FilmListAdapter(filmsResults, viewModel)
+    override fun showFilms(filmsList: ArrayList<Film>) {
+        val adapter = FilmListAdapter(filmsList, viewModel)
         recyclerView.adapter = adapter
+        arrayData = filmsList as ArrayList<Any>
     }
 
     override fun showPeople(peopleList: ArrayList<People>) {
@@ -68,21 +74,25 @@ class ListFragment : BaseFragment<ListFragmentViewModel>(), ListView, OnQueryTex
     override fun showPlanets(planetsList: ArrayList<Planet>) {
         val adapter = PlanetListAdapter(planetsList, viewModel)
         recyclerView.adapter = adapter
+        arrayData = planetsList as ArrayList<Any>
     }
 
     override fun showSpecies(speciesList: ArrayList<Specie>) {
         val adapter = SpecieListAdapter(speciesList, viewModel)
         recyclerView.adapter = adapter
+        arrayData = speciesList as ArrayList<Any>
     }
 
     override fun showStarships(starshipsList: ArrayList<Starship>) {
         val adapter = StarshipListAdapter(starshipsList, viewModel)
         recyclerView.adapter = adapter
+        arrayData = starshipsList as ArrayList<Any>
     }
 
     override fun showVehicles(vehiclesList: ArrayList<Vehicle>) {
         val adapter = VehicleListAdapter(vehiclesList, viewModel)
         recyclerView.adapter = adapter
+        arrayData = vehiclesList as ArrayList<Any>
     }
 
     override fun showError(throwable: Throwable) {
@@ -90,18 +100,79 @@ class ListFragment : BaseFragment<ListFragmentViewModel>(), ListView, OnQueryTex
         Toast.makeText(context,throwable.localizedMessage, Toast.LENGTH_LONG).show()
     }
 
-    override fun gotoFilmDetails(film: Film) {
-        TODO("Not yet implemented")
-    }
-
     override fun onQueryTextSubmit(query: String?): Boolean {
-        TODO("Not yet implemented")
+        return false
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
-        arrayData.removeAt(0)
-        val adapter = PeopleListAdapter(arrayData as ArrayList<People>, viewModel)
-        recyclerView.adapter = adapter
+        Log.d("cooucou",newText)
+        when {
+            arrayData.first() is People -> {
+                var filteredDatas = ArrayList<People>()
+                if (newText!!.trim() != ""){
+                    for (data in arrayData as ArrayList<People>){
+                        if(data.name.toLowerCase().contains(newText!!.toLowerCase())){
+                            filteredDatas.add(data)
+                        }
+                    }
+                } else {
+                    filteredDatas = arrayData as ArrayList<People>
+                }
+                val adapter = PeopleListAdapter(filteredDatas, viewModel)
+                recyclerView.adapter = adapter
+            }
+            arrayData.first() is Planet -> {
+                var filteredDatas = ArrayList<Planet>()
+                for (data in arrayData as ArrayList<Planet>){
+                    if(data.name.toLowerCase().contains(newText!!.toLowerCase())){
+                        filteredDatas.add(data)
+                    }
+                }
+                val adapter = PlanetListAdapter(filteredDatas, viewModel)
+                recyclerView.adapter = adapter
+            }
+            arrayData.first()is Film -> {
+                var filteredDatas = ArrayList<Film>()
+                for (data in arrayData as ArrayList<Film>){
+                    if(data.title.toLowerCase().contains(newText!!.toLowerCase())){
+                        filteredDatas.add(data)
+                    }
+                }
+                val adapter = FilmListAdapter(filteredDatas, viewModel)
+                recyclerView.adapter = adapter
+            }
+            arrayData.first()is Specie -> {
+                var filteredDatas = ArrayList<Specie>()
+                for (data in arrayData as ArrayList<Specie>){
+                    if(data.name.toLowerCase().contains(newText!!.toLowerCase())){
+                        filteredDatas.add(data)
+                    }
+                }
+                val adapter = SpecieListAdapter(filteredDatas, viewModel)
+                recyclerView.adapter = adapter
+            }
+            arrayData.first()is Vehicle -> {
+                var filteredDatas = ArrayList<Vehicle>()
+                for (data in arrayData as ArrayList<Vehicle>){
+                    if(data.name.toLowerCase().contains(newText!!.toLowerCase())){
+                        filteredDatas.add(data)
+                    }
+                }
+                val adapter = VehicleListAdapter(filteredDatas, viewModel)
+                recyclerView.adapter = adapter
+            }
+            arrayData.first()is Starship -> {
+                var filteredDatas = ArrayList<Starship>()
+                for (data in arrayData as ArrayList<Starship>){
+                    if(data.name.toLowerCase().contains(newText!!.toLowerCase())){
+                        filteredDatas.add(data)
+                    }
+                }
+                val adapter = StarshipListAdapter(filteredDatas, viewModel)
+                recyclerView.adapter = adapter
+            }
+        }
+
         return false
     }
 

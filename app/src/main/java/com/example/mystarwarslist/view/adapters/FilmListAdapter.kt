@@ -11,7 +11,7 @@ import com.example.mystarwarslist.data.entity.Film
 import com.example.mystarwarslist.data.entity.FilmsResults
 import kotlinx.android.synthetic.main.list_item.view.*
 
-class FilmListAdapter(private val datas : FilmsResults, private val listener : FilmListAdapter.ClickOnRecycler) : RecyclerView.Adapter<FilmListAdapter.ViewHolder>() {
+class FilmListAdapter(private val datas : ArrayList<Film>, private val listener : FilmListAdapter.ClickOnRecycler) : RecyclerView.Adapter<FilmListAdapter.ViewHolder>() {
 
     class ViewHolder(view: View, private val listener : FilmListAdapter.ClickOnRecycler) : RecyclerView.ViewHolder(view) {
         val context: Context = itemView.context
@@ -40,11 +40,11 @@ class FilmListAdapter(private val datas : FilmsResults, private val listener : F
     }
 
     override fun getItemCount(): Int {
-        return datas.results.size
+        return datas.size
     }
 
     override fun onBindViewHolder(holder: FilmListAdapter.ViewHolder, position: Int) {
-        var list : List<Film> = datas.results.sortedWith(compareBy { it.episode_id })
+        var list : List<Film> = datas.sortedWith(compareBy { it.episode_id })
         holder.bindItems(list[position],position)
     }
 

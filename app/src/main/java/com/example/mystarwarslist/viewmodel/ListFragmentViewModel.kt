@@ -1,8 +1,10 @@
 package com.example.mystarwarslist.viewmodel
 
 import android.content.Context
+import android.util.Log
 import androidx.appcompat.widget.SearchView
 import com.example.mystarwarslist.base.BaseViewModel
+import com.example.mystarwarslist.common.Constants
 import com.example.mystarwarslist.data.entity.*
 import com.example.mystarwarslist.data.network.MyStarWarsListService
 import com.example.mystarwarslist.view.ListView
@@ -10,11 +12,12 @@ import com.example.mystarwarslist.view.adapters.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.fragment_list.*
 import javax.inject.Inject
 
 class ListFragmentViewModel
 @Inject constructor(private val service: MyStarWarsListService, private val context: Context) : BaseViewModel<ListView>(),
- FilmListAdapter.ClickOnRecycler, PeopleListAdapter.ClickOnRecycler, PlanetListAdapter.ClickOnRecycler, SpecieListAdapter.ClickOnRecycler, StarshipListAdapter.ClickOnRecycler, VehicleListAdapter.ClickOnRecycler, SearchView.OnQueryTextListener {
+ FilmListAdapter.ClickOnRecycler, PeopleListAdapter.ClickOnRecycler, PlanetListAdapter.ClickOnRecycler, SpecieListAdapter.ClickOnRecycler, StarshipListAdapter.ClickOnRecycler, VehicleListAdapter.ClickOnRecycler {
 
     var people = ArrayList<People>()
     var species = ArrayList<Specie>()
@@ -49,7 +52,7 @@ class ListFragmentViewModel
                             view.showError(it)
                         },
                     onSuccess = {
-                        view.showFilms(it)
+                        view.showFilms(it.results)
                     }
                 )
 
@@ -183,14 +186,5 @@ class ListFragmentViewModel
                 )
 
     }
-
-    override fun onQueryTextSubmit(query: String?): Boolean {
-        TODO("Not yet implemented")
-    }
-
-    override fun onQueryTextChange(newText: String?): Boolean {
-        TODO("Not yet implemented")
-    }
-
 
 }

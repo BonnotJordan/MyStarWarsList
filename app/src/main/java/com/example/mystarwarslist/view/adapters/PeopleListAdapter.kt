@@ -25,6 +25,7 @@ class PeopleListAdapter(private val datas : ArrayList<People>, private val liste
             var result : Any? = null
 
             title.text = data.name
+
             subtitle.text = data.homeworld
 
             itemView.setOnClickListener {

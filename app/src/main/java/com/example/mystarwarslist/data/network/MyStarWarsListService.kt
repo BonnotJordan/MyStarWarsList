@@ -6,6 +6,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
+import kotlin.reflect.KClass
 
 interface MyStarWarsListService {
 
@@ -36,5 +37,9 @@ interface MyStarWarsListService {
     @GET("vehicles/")
     fun getVehicles(@Query("page") page : Int):
             Single<VehiclesResult>
+
+    @GET("")
+    fun <T> getAdditionalValue(@Query("") str : String, klass: Class<T>): T
+
 
 }
