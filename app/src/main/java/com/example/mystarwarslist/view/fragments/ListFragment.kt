@@ -105,7 +105,6 @@ class ListFragment : BaseFragment<ListFragmentViewModel>(), ListView, SearchView
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
-        Log.d("cooucou",newText)
         when {
             arrayData.first() is People -> {
                 var filteredDatas = ArrayList<People>()
